@@ -1,5 +1,7 @@
 # 0x00. Pagination
 
+## Description
+
 This project demonstrates various pagination techniques for handling large datasets in a REST API context. The primary focus is on:
 
 1. Simple pagination using `page` and `page_size` parameters.
