@@ -5,6 +5,7 @@ Flask app with mock user login system using Flask-Babel.
 
 from flask import Flask, request, render_template, g
 from flask_babel import Babel
+from typing import Union, Dict
 
 
 class Config:
@@ -27,15 +28,11 @@ users = {
 }
 
 
-def get_user():
+def get_user() -> Union[Dict, None]:
     """Get a user from the 'login_as' parameter."""
-    user_id = request.args.get('login_as')
-    if user_id:
-        try:
-            user_id = int(user_id)
-        except ValueError:
-            return None
-        return users.get(user_id)
+    login_id = request.args.get('login_as')
+    if login_id:
+        return users.get(int(login_id))
     return None
 
 
