@@ -43,8 +43,7 @@ def get_user() -> Union[Dict, None]:
 @app.before_request
 def before_request() -> None:
     """Set g.user before each request."""
-    user = get_user()
-    g.user = user
+    g.user = get_user()
 
 
 @babel.localeselector
