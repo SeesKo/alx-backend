@@ -50,11 +50,10 @@ def before_request() -> None:
 @babel.localeselector
 def get_locale() -> str:
     """Determine the best locale for the request."""
-    if g.user and g.user['locale'] in app.config['LANGUAGES']:
-        return g.user['locale']
-    locale = request.args.get('locale', '')
-    if locale in app.config['LANGUAGES']:
+    locale = request.args.get('locale')
+    if locale and locale in app.config['LANGUAGES']:
         return locale
+    # Fallback to the default locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
@@ -65,4 +64,4 @@ def index() -> str:
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run()
