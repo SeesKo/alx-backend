@@ -17,6 +17,7 @@ class Config:
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.url_map.strict_slashes = False
 babel = Babel(app)
 
 
@@ -32,32 +33,36 @@ def get_user() -> Union[Dict, None]:
     """Get a user from the 'login_as' parameter."""
     login_id = request.args.get('login_as')
     if login_id:
-        return users.get(int(login_id))
+        try:
+            return users.get(int(login_id))
+        except ValueError:
+            return None
     return None
 
 
 @app.before_request
-def before_request():
+def before_request() -> None:
     """Set g.user before each request."""
-    g.user = get_user()
+    user = get_user()
+    g.user = user
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """Determine the best locale for the request."""
     if g.user and g.user['locale'] in app.config['LANGUAGES']:
         return g.user['locale']
-    locale = request.args.get('locale')
-    if locale and locale in app.config['LANGUAGES']:
+    locale = request.args.get('locale', '')
+    if locale in app.config['LANGUAGES']:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/')
-def index():
+def index() -> str:
     """Render the index page."""
     return render_template('5-index.html')
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
