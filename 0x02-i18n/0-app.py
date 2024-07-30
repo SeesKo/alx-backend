@@ -13,7 +13,7 @@ def index() -> str:
     """
     Render the index page with a welcome message.
     """
-    return render_template('index.html')
+    return render_template('0-index.html')
 
 
 if __name__ == '__main__':
