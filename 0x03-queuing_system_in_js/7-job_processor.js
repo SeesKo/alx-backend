@@ -10,7 +10,6 @@ function sendNotification(phoneNumber, message, job, done) {
 
   // Check if the phone number is blacklisted
   if (blacklistedNumbers.includes(phoneNumber)) {
-    // Fail the job with an error if the number is blacklisted
     done(new Error(`Phone number ${phoneNumber} is blacklisted`));
     return;
   }
